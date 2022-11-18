@@ -23,6 +23,7 @@ import com.study.service.member.MemberService;
 @Controller
 @RequestMapping("member")
 public class MemberController {
+	
 	@Autowired
 	private MemberService service;
 
