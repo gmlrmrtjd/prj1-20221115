@@ -35,7 +35,7 @@ public class CustomConfig {
 	
 	@Value("${aws.s3.file.url.prefix}")
 	private String imgUrl;
-
+	
 	@Autowired
 	private ServletContext servletContext;
 	
@@ -54,11 +54,12 @@ public class CustomConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.formLogin().loginPage("/member/login").defaultSuccessUrl("/board/list", true);
 		http.logout().logoutUrl("/member/logout");
+		http.rememberMe();
 		http.csrf().disable();
 		
 		return http.build();
 	}
-	
+
 	@Bean
 	public S3Client s3Client() {
 		return S3Client.builder()

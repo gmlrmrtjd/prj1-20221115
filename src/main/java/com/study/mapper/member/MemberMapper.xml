@@ -17,10 +17,11 @@
 	WHERE
 		nickName = #{nickName}
 	</select>
-	
+
 	<select id="selectByEmail" resultType="com.study.domain.member.MemberDto">
 	SELECT 
 		id,
+		nickName,
 		password,
 		email,
 		inserted
@@ -38,29 +39,45 @@
 	<update id="update">
 	UPDATE Member
 	SET
+		<if test="password != null">
 		password = #{password},
+		</if>
+		nickName = #{nickName},
 		email = #{email}
 	WHERE
 		id = #{id}
 	
 	</update>
 
-	<select id="selectById" resultType="com.study.domain.member.MemberDto">
+	<select id="selectById" resultMap="memberMap">
 	SELECT 
 		id,
+		nickName,
 		password,
 		email,
-		inserted
+		inserted,
+		a.auth
 	FROM
-		Member
+		Member m LEFT JOIN Authority a ON m.id = a.memberId
 	WHERE
 		id = #{id}
-	
 	</select>
+	
+	<resultMap type="com.study.domain.member.MemberDto" id="memberMap">
+		<id column="id" property="id"></id>
+		<result column="nickName" property="nickName"/>
+		<result column="password" property="password"/>
+		<result column="email" property="email"/>
+		<result column="inserted" property="inserted"/>
+		<collection property="auth" ofType="string">
+			<result column="auth" property="auth"/>
+		</collection>
+	</resultMap>
 
 	<select id="selectAll" resultType="com.study.domain.member.MemberDto">
 	SELECT 
 		id,
+		nickName,
 		'숨김' password,
 		email,
 		inserted
@@ -71,7 +88,7 @@
 	</select>
 
 	<insert id="insert">
-	INSERT INTO Member (id, password, email)
-	VALUES (#{id}, #{password}, #{email})
+	INSERT INTO Member (id, nickName, password, email)
+	VALUES (#{id}, #{nickName}, #{password}, #{email})
 	</insert>
 </mapper>

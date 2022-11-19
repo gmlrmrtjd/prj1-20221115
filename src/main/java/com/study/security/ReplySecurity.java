@@ -8,7 +8,6 @@ import com.study.mapper.board.ReplyMapper;
 
 @Component
 public class ReplySecurity {
-	
 	@Autowired
 	private ReplyMapper mapper;
 
